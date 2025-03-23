@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Yummy Food Blog" />
+    <meta name="author" content="Yummy Team" />
+    <title>Yummy | Food Blog</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+
+    <!-- CSS Styles -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="assets/css/nice-select.css" />
+    <link rel="stylesheet" href="assets/css/slicknav.min.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header class="header-section">
+        <div class="container">
+            <div class="logo">
+                <a href="#homepage"><img src="assets/img/logo.png" alt="Yummy Logo"></a>
+            </div>
+            <div class="nav-menu">
+                <nav class="main-menu mobile-menu">
+                    <ul>
+                        <li class="active"><a href="#homepage">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#recipes">Recipes</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="nav-right search-switch">
+                    <i class="fa fa-search"></i>
+                </div>
+            </div>
+            <div id="mobile-menu-wrap"></div>
+        </div>
+    </header>
+    <!-- Header End -->
+
+    <!-- Glavni sadržaj SPApp -->
+    <section id="pageContent" class="pt-5 mt-5">
+        <main id="spapp" role="main">
+            <section id="homepage" data-load="pages/homepage.html"></section>
+            <section id="about" data-load="pages/about-me.html"></section>
+            <section id="recipes" data-load="pages/recipe.html"></section>
+            <section id="blog" data-load="pages/blog.html"></section>
+            <section id="contact" data-load="pages/contact.html"></section>
+        </main>  
+    </section>
+
+        <!-- Footer Section -->
+        <footer class="footer-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <div class="fs-left">
+                            <div class="logo">
+                                <a href="#homepage">
+                                    <img src="assets/img/footer-logo.png" alt="Yummy Logo">
+                                </a>
+                            </div>
+                            <p>Every bite tells a story - let's discover them together.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 offset-lg-1">
+                        <form action="#" class="subscribe-form">
+                            <h3>Subscribe to our newsletter</h3>
+                            <input type="email" placeholder="Your e-mail">
+                            <button type="submit">Subscribe</button>
+                        </form>
+                        <div class="social-links">
+                            <a href="#"><i class="fa fa-instagram"></i><span>Instagram</span></a>
+                            <a href="#"><i class="fa fa-pinterest"></i><span>Pinterest</span></a>
+                            <a href="#"><i class="fa fa-facebook"></i><span>Facebook</span></a>
+                            <a href="#"><i class="fa fa-twitter"></i><span>Twitter</span></a>
+                            <a href="#"><i class="fa fa-youtube"></i><span>Youtube</span></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="copyright-text text-center">
+                            Copyright &copy; <script>document.write(new Date().getFullYear());</script> 
+                            Yummy Food Blog | Made with <i class="fa fa-heart-o"></i> by 
+                            <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Footer Section End -->
+    
+        <!-- Search model -->
+        <div class="search-model">
+            <div class="h-100 d-flex align-items-center justify-content-center">
+                <div class="search-close-switch">+</div>
+                <form class="search-model-form">
+                    <input type="text" id="search-input" placeholder="Search here.....">
+                </form>
+            </div>
+        </div>
+        <!-- Search model end -->
+    
+
+        <script src="assets/js/jquery-3.3.1.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.slicknav.js"></script>
+        <script src="assets/js/jquery.nice-select.min.js"></script>
+        <script src="assets/js/mixitup.min.js"></script>
+        <script src="assets/js/main.js"></script> <!-- VAŽNO DA SE UČITA PRE -->
+        <script src="assets/js/jquery.spapp.js"></script>
+        <script src="assets/js/custom.js"></script> <!-- Onda custom.js -->
+        
+</body>
+</html>
