@@ -1,36 +1,65 @@
 <?php
-require_once '../../dao/RecipeDao.php';
+require_once '../../services/RecipeService.php';
 header('Content-Type: application/json');
 
-$recipeDao = new RecipeDao();
+$recipeService = new RecipeService();
 
-// CREATE (POST)
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = json_decode(file_get_contents("php://input"), true);
-    $recipeDao->createRecipe($data['name'], $data['description'], $data['ingredients'], $data['instructions'], $data['user_id'], $data['category_id']);
-    echo json_encode(["message" => "Recipe created successfully"]);
-}
+try {
+    switch ($_SERVER['REQUEST_METHOD']) {
+        case 'POST':
+            $data = json_decode(file_get_contents("php://input"), true);
+            $recipeService->create_recipe($data);
+            echo json_encode(["message" => "Recipe created successfully"]);
+            break;
 
-// READ (GET)
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_GET['id'])) {
-        echo json_encode($recipeDao->getRecipeById($_GET['id']));
-    } else {
-        echo json_encode($recipeDao->getAllRecipes());
+        case 'GET':
+            if (isset($_GET['id'])) {
+                echo json_encode($recipeService->get_recipe_by_id($_GET['id']));
+            } else {
+                echo json_encode($recipeService->get_all_recipes());
+            }
+            break;
+
+        case 'PUT':
+            $data = json_decode(file_get_contents("php://input"), true);
+            $recipeService->update_recipe($data['id'], $data);
+            echo json_encode(["message" => "Recipe updated successfully"]);
+            break;
+
+        case 'DELETE':
+            $data = json_decode(file_get_contents("php://input"), true);
+            $recipeService->delete_recipe($data['id']);
+            echo json_encode(["message" => "Recipe deleted successfully"]);
+            break;
     }
+} catch (Exception $e) {
+    http_response_code(400);
+    echo json_encode(["error" => $e->getMessage()]);
 }
 
-// UPDATE (PUT)
-if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-    $data = json_decode(file_get_contents("php://input"), true);
-    $recipeDao->updateRecipe($data['id'], $data['name'], $data['description'], $data['ingredients'], $data['instructions']);
-    echo json_encode(["message" => "Recipe updated successfully"]);
-}
+Flight::route('GET /recipes', function () {
+    Flight::json(Flight::get('recipe_service')->get_all_recipes());
+});
 
-// DELETE (DELETE)
-if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-    $data = json_decode(file_get_contents("php://input"), true);
-    $recipeDao->deleteRecipe($data['id']);
-    echo json_encode(["message" => "Recipe deleted successfully"]);
-}
+Flight::route('GET /recipes/@id', function ($id) {
+    Flight::json(Flight::get('recipe_service')->get_recipe_by_id($id));
+});
+
+Flight::route('POST /recipes', function () {
+    $data = Flight::request()->data->getData();
+    Flight::get('recipe_service')->create_recipe($data);
+    Flight::json(["message" => "Recipe created successfully"]);
+});
+
+Flight::route('PUT /recipes/@id', function ($id) {
+    $data = Flight::request()->data->getData();
+    Flight::get('recipe_service')->update_recipe($id, $data);
+    Flight::json(["message" => "Recipe updated successfully"]);
+});
+
+Flight::route('DELETE /recipes/@id', function ($id) {
+    Flight::get('recipe_service')->delete_recipe($id);
+    Flight::json(["message" => "Recipe deleted successfully"]);
+});
+
 ?>
