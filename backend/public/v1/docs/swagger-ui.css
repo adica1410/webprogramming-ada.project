@@ -1,0 +1,138 @@
+body {
+  margin: 0;
+  font-family: Roboto, sans-serif;
+  background-color: #fafafa;
+  color: #3b4151;
+}
+
+.swagger-ui .topbar {
+  background-color: #61affe;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.swagger-ui .topbar-wrapper .link span {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+}
+
+.swagger-ui .scheme-container {
+  background-color: #f3f3f3;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 20px 0;
+}
+
+.swagger-ui .info {
+  margin: 20px 0;
+}
+
+.swagger-ui .info hgroup h2 {
+  font-size: 28px;
+  color: #3b4151;
+  margin: 0 0 10px;
+}
+
+.swagger-ui .info hgroup h1 {
+  font-size: 22px;
+  color: #3b4151;
+}
+
+.swagger-ui .opblock {
+  margin: 20px 0;
+  border-radius: 4px;
+  overflow: hidden;
+  border-left: 5px solid #61affe;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.swagger-ui .opblock-summary {
+  background-color: #f0f7ff;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.swagger-ui .opblock-summary-method {
+  background-color: #61affe;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.swagger-ui .opblock-summary-path {
+  font-family: monospace;
+  font-size: 16px;
+  color: #3b4151;
+}
+
+.swagger-ui .opblock-description-wrapper p {
+  margin: 10px 0;
+  color: #333;
+}
+
+.swagger-ui .responses-inner {
+  padding: 15px;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+}
+
+.swagger-ui .response-col_status {
+  font-weight: bold;
+  color: #61affe;
+}
+
+.swagger-ui .model-box {
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #fdfdfd;
+  margin-top: 10px;
+}
+
+.swagger-ui .parameter__name {
+  font-weight: bold;
+}
+
+.swagger-ui .parameter__type {
+  color: #999;
+}
+
+.swagger-ui .parameter__in {
+  font-style: italic;
+}
+
+.swagger-ui .btn {
+  background-color: #61affe;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.swagger-ui .btn:hover {
+  background-color: #4a97d1;
+}
+
+.swagger-ui .markdown code,
+.swagger-ui pre {
+  background-color: #f6f8fa;
+  border-radius: 4px;
+  padding: 5px;
+  font-family: monospace;
+}
+
+.swagger-ui .auth-wrapper {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  background-color: #fefefe;
+}
