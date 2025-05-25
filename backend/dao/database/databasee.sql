@@ -74,3 +74,12 @@ CREATE INDEX idx_comments_recipe ON comments(recipe_id);
 CREATE INDEX idx_comments_user ON comments(user_id);
 CREATE INDEX idx_favorites_user ON favorites(user_id);
 CREATE INDEX idx_favorites_recipe ON favorites(recipe_id);
+
+-- ✅ Ubacivanje početnog admin korisnika
+INSERT INTO users (name, email, password, role)
+VALUES (
+    'Admin',
+    'admin@site.com',
+    '$2y$10$ZMEmpLMiDZ6u6oH3V8Wk3.EDz2AJzjKgx2U5/1zHwP5BpBJ29sbD2', -- lozinka: admin123
+    'admin'
+);

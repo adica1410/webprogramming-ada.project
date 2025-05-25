@@ -1,51 +1,44 @@
 <?php
 require_once '../../services/FavoriteService.php';
-header('Content-Type: application/json');
+require_once '../../middlewares/AuthMiddleware.php';
+require_once '../../middlewares/AuthorizationMiddleware.php';
 
-$favoriteService = new FavoriteService();
+Flight::set('favorite_service', new FavoriteService());
 
-try {
-    switch ($_SERVER['REQUEST_METHOD']) {
-        case 'POST':
-            $data = json_decode(file_get_contents("php://input"), true);
-            $favoriteService->add_to_favorites($data['user_id'], $data['recipe_id']);
-            echo json_encode(["message" => "Added to favorites"]);
-            break;
-
-        case 'GET':
-            if (isset($_GET['user_id'])) {
-                echo json_encode($favoriteService->get_user_favorites($_GET['user_id']));
-            } else {
-                throw new Exception("Missing user_id in GET");
-            }
-            break;
-
-        case 'DELETE':
-            $data = json_decode(file_get_contents("php://input"), true);
-            $favoriteService->remove_from_favorites($data['user_id'], $data['recipe_id']);
-            echo json_encode(["message" => "Removed from favorites"]);
-            break;
-    }
-} catch (Exception $e) {
-    http_response_code(400);
-    echo json_encode(["error" => $e->getMessage()]);
-}
-
+// GET - Dohvati favorite za usera (dozvoljeno samo svom useru ili adminu)
 Flight::route('GET /favorites/@user_id', function ($user_id) {
+    Flight::auth_required();
+    $user = Flight::get('user');
+
+    if ($user->id != $user_id && $user->role !== 'admin') {
+        Flight::halt(403, json_encode(['error' => 'Forbidden']));
+    }
+
     Flight::json(Flight::get('favorite_service')->get_user_favorites($user_id));
 });
 
+// POST - Dodaj recept u favorite (samo za sebe)
 Flight::route('POST /favorites', function () {
+    Flight::auth_required();
+    $user = Flight::get('user');
+
     $data = Flight::request()->data->getData();
-    Flight::get('favorite_service')->add_favorite($data);
+    $data['user_id'] = $user->id; // osiguraj da korisnik dodaje sebi
+
+    Flight::get('favorite_service')->add_favorite($data); // koristi array
     Flight::json(["message" => "Added to favorites"]);
 });
 
+// DELETE - Ukloni recept iz favorita (samo za sebe)
 Flight::route('DELETE /favorites', function () {
+    Flight::auth_required();
+    $user = Flight::get('user');
+
     $data = Flight::request()->data->getData();
-    Flight::get('favorite_service')->remove_favorite($data);
+    $data['user_id'] = $user->id; // osiguraj da korisnik briše svoje
+
+    Flight::get('favorite_service')->remove_favorite($data); // koristi array
     Flight::json(["message" => "Removed from favorites"]);
 });
 
 ?>
-

@@ -14,5 +14,11 @@ class CommentDao extends BaseDao {
     public function deleteComment($id) {
         return $this->query("DELETE FROM comments WHERE id = ?", [$id]);
     }
+    public function getCommentById($id) {
+        $stmt = $this->conn->prepare("SELECT * FROM comments WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
 }
 ?>
