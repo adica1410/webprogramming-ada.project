@@ -1,36 +1,50 @@
 <?php
-require_once '../../dao/UserDao.php';
+require_once __DIR__ . '/../services/UserService.php';
+require_once __DIR__ . '/../middlewares/AuthMiddleware.php';
+require_once __DIR__ . '/../middlewares/AuthorizationMiddleware.php';
+
 header('Content-Type: application/json');
+Flight::set('user_service', new UserService());
 
-$userDao = new UserDao();
+//  GET all users – samo admin
+Flight::route('GET /users', function () {
+    Flight::auth_required();
+    AuthorizationMiddleware::is_admin();
 
-// CREATE (POST) - Dodavanje korisnika
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = json_decode(file_get_contents("php://input"), true);
-    $userDao->createUser($data['name'], $data['email'], $data['password'], $data['role']);
-    echo json_encode(["message" => "User created successfully"]);
-}
+    Flight::json(Flight::get('user_service')->get_all_users());
+});
 
-// READ (GET) - Dohvaćanje korisnika
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_GET['id'])) {
-        echo json_encode($userDao->getUserById($_GET['id']));
-    } else {
-        echo json_encode($userDao->getAllUsers());
-    }
-}
+//  GET user by ID – admin ili vlasnik profila
+Flight::route('GET /users/@id', function ($id) {
+    Flight::auth_required();
+    AuthorizationMiddleware::is_owner_or_admin($id);
 
-// UPDATE (PUT) - Ažuriranje korisnika
-if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-    $data = json_decode(file_get_contents("php://input"), true);
-    $userDao->updateUser($data['id'], $data['name'], $data['email'], $data['role']);
-    echo json_encode(["message" => "User updated successfully"]);
-}
+    Flight::json(Flight::get('user_service')->get_user_by_id($id));
+});
 
-// DELETE (DELETE) - Brisanje korisnika
-if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-    $data = json_decode(file_get_contents("php://input"), true);
-    $userDao->deleteUser($data['id']);
-    echo json_encode(["message" => "User deleted successfully"]);
-}
-?>
+//  POST – registracija (javna)
+Flight::route('POST /users', function () {
+    $data = Flight::request()->data->getData();
+    Flight::get('user_service')->create_user($data);
+    Flight::json(["message" => "User created successfully"]);
+});
+
+//  PUT – admin ili vlasnik može ažurirati
+Flight::route('PUT /users/@id', function ($id) {
+    Flight::auth_required();
+    AuthorizationMiddleware::is_owner_or_admin($id);
+
+    $data = Flight::request()->data->getData();
+    Flight::get('user_service')->update_user($id, $data);
+    Flight::json(["message" => "User updated successfully"]);
+});
+
+//  DELETE – samo admin
+Flight::route('DELETE /users/@id', function ($id) {
+    Flight::auth_required();
+    AuthorizationMiddleware::is_admin();
+
+    Flight::get('user_service')->delete_user($id);
+    Flight::json(["message" => "User deleted successfully"]);
+});
+

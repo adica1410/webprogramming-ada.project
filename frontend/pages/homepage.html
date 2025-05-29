@@ -1,3 +1,25 @@
+    <!-- USER INFO + PANELS PO ROLE -->
+    <div class="container text-center mt-5">
+        <div class="card shadow p-4 mb-4 bg-light rounded" style="max-width: 600px; margin: auto;">
+            <h2 class="mb-3">Welcome, <span id="user-name">User</span>!</h2>
+            <p class="mb-3">Your role: <strong><span id="user-role">Role</span></strong></p>
+            <button onclick="logout()" class="btn btn-danger">Logout</button>
+        </div>
+    </div>
+    
+    <div id="admin-panel" style="display:none;" class="container text-center mt-4">
+        <h3 class="mb-3">Admin Panel</h3>
+        <button onclick="location.href='#users'" class="btn btn-primary m-2">Manage Users</button>
+        <button onclick="location.href='#categories'" class="btn btn-primary m-2">Manage Categories</button>
+    </div>
+    
+    <div id="user-panel" style="display:none;" class="container text-center mt-4">
+        <h3 class="mb-3">User Panel</h3>
+        <button onclick="location.href='#recipes'" class="btn btn-success m-2">Browse Recipes</button>
+        <button onclick="location.href='#favorites'" class="btn btn-success m-2">My Favorites</button>
+    </div>
+    
+    
     <!-- Page Top Recipe Section Begin -->
     <section class="page-top-recipe">
         <div class="container">

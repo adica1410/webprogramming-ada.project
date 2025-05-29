@@ -1,36 +1,48 @@
 <?php
-require_once '../../dao/CategoryDao.php';
-header('Content-Type: application/json');
+require_once '../../services/CategoryService.php';
+require_once '../../middlewares/AuthMiddleware.php';
+require_once '../../middlewares/AuthorizationMiddleware.php';
 
-$categoryDao = new CategoryDao();
+Flight::set('category_service', new CategoryService());
 
-// CREATE (POST)
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = json_decode(file_get_contents("php://input"), true);
-    $categoryDao->createCategory($data['name'], $data['description']);
-    echo json_encode(["message" => "Category created successfully"]);
-}
+Flight::route('GET /categories', function () {
+    Flight::auth_required();
+    AuthorizationMiddleware::is_user_or_admin();
 
-// READ (GET)
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_GET['id'])) {
-        echo json_encode($categoryDao->getCategoryById($_GET['id']));
-    } else {
-        echo json_encode($categoryDao->getAllCategories());
-    }
-}
+    Flight::json(Flight::get('category_service')->get_all_categories());
+});
 
-// UPDATE (PUT)
-if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-    $data = json_decode(file_get_contents("php://input"), true);
-    $categoryDao->updateCategory($data['id'], $data['name'], $data['description']);
-    echo json_encode(["message" => "Category updated successfully"]);
-}
+Flight::route('GET /categories/@id', function ($id) {
+    Flight::auth_required();
+    AuthorizationMiddleware::is_user_or_admin();
 
-// DELETE (DELETE)
-if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-    $data = json_decode(file_get_contents("php://input"), true);
-    $categoryDao->deleteCategory($data['id']);
-    echo json_encode(["message" => "Category deleted successfully"]);
-}
+    Flight::json(Flight::get('category_service')->get_category_by_id($id));
+});
+
+Flight::route('POST /categories', function () {
+    Flight::auth_required();
+    AuthorizationMiddleware::is_admin(); // samo admin moze dodavati kategorije
+
+    $data = Flight::request()->data->getData();
+    Flight::get('category_service')->create_category($data['name'], $data['description']);
+    Flight::json(["message" => "Category created successfully"]);
+});
+
+Flight::route('PUT /categories/@id', function ($id) {
+    Flight::auth_required();
+    AuthorizationMiddleware::is_admin(); // samo admin moze mijenjati
+
+    $data = Flight::request()->data->getData();
+    Flight::get('category_service')->update_category($id, $data['name'], $data['description']);
+    Flight::json(["message" => "Category updated successfully"]);
+});
+
+Flight::route('DELETE /categories/@id', function ($id) {
+    Flight::auth_required();
+    AuthorizationMiddleware::is_admin(); // samo admin moze brisati
+
+    Flight::get('category_service')->delete_category($id);
+    Flight::json(["message" => "Category deleted successfully"]);
+});
+
 ?>
